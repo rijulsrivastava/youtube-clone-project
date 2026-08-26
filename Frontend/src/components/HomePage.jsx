@@ -1,6 +1,8 @@
+import CategoryFiltering from "../CategoryFiltering";
 import VideoList from "./VideoList";
+import { useState } from "react";
 
-function HomePage({ isMenuOpen }) {
+function HomePage() {
 
     const videos = [
         {
@@ -85,14 +87,17 @@ function HomePage({ isMenuOpen }) {
         }
     ]
 
+    const [filterCategory, setFilterCategory] = useState("All");
+    const filteredVideos = filterCategory == "All"
+        ? videos
+        : videos.filter((video) => video.category === filterCategory)
+
     return (
         <main>
-            {videos.length > 0 ?
-                (
-                    <VideoList videos={videos} />
-                ) : (
-                    <h2>No videos found</h2>
-                )}
+            <CategoryFiltering filterCategory={filterCategory} setFilterCategory={setFilterCategory} />
+            {filteredVideos.length > 0
+                ? <VideoList videos={filteredVideos} />
+                : <h2>No videos found</h2>}
         </main >
     )
 }
