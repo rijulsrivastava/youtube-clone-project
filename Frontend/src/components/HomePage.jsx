@@ -1,4 +1,4 @@
-import CategoryFiltering from "../CategoryFiltering";
+import CategoryFiltering from "./categoryFiltering";
 import VideoList from "./VideoList";
 import { useState } from "react";
 
