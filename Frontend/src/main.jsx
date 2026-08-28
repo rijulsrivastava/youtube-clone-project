@@ -7,6 +7,7 @@ import HomePage from './components/HomePage.jsx'
 import Login from './components/Login.jsx'
 import RegisterUser from './components/RegisterUser.jsx'
 import VideoPlayer from './components/VideoPlayer.jsx'
+import Channel from './components/Channel.jsx'
 
 const appProvider = createBrowserRouter([{
   path: '/',
@@ -26,6 +27,10 @@ const appProvider = createBrowserRouter([{
   {
     path: '/register',
     element: <RegisterUser />
+  },
+  {
+    path: '/channel/:id',
+    element: <Channel />
   }
   ]
 }])
