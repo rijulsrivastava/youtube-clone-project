@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import videos from "../utilis/mockData";
 import { BiSolidDislike, BiSolidLike } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
+import Comments from "./Comments";
 
 function VideoPlayer() {
 
@@ -72,7 +73,7 @@ function VideoPlayer() {
                 </div>
 
                 <div className="mt-8">
-                    Comments
+                    <Comments id={id} />
                 </div>
             </div>
 
