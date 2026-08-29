@@ -10,10 +10,12 @@ import VideoPlayer from './components/VideoPlayer.jsx'
 import Channel from './components/Channel.jsx'
 import CreateChannel from './components/CreateChannel.jsx'
 import EditVideo from './components/EditVideo.jsx'
+import Error from './components/Error.jsx'
 
 const appProvider = createBrowserRouter([{
   path: '/',
   element: <App />,
+  errorElement: <Error />,
   children: [{
     path: '/',
     element: <HomePage />
