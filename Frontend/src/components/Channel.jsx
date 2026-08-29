@@ -3,38 +3,12 @@ import { useNavigate, useParams } from "react-router"
 import { BiSolidEdit, BiSolidTrash } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
 import videos from "../utilis/mockData"
+import channels from "../utilis/mockChannelData";
 
 function Channel() {
 
     const { id } = useParams();
     const navigate = useNavigate();
-
-    const channels = [
-        {
-            _id: "channel01",
-            channelName: "Code With John",
-            owner: "user01",
-            description:
-                "Coding tutorials and technology videos.",
-            channelBanner:
-                "https://picsum.photos/seed/banner/1200/300",
-            avatar:
-                "https://picsum.photos/seed/avatar/150/150",
-            subscribers: 5200
-        },
-        {
-            _id: "channel02",
-            channelName: "Tech World",
-            owner: "user02",
-            description:
-                "Latest technology news, reviews and tutorials.",
-            channelBanner:
-                "https://picsum.photos/seed/techbanner/1200/300",
-            avatar:
-                "https://picsum.photos/seed/techavatar/150/150",
-            subscribers: 8300
-        }
-    ]
 
     const channel = channels.find(
         (channel) => channel._id === id
@@ -76,8 +50,7 @@ function Channel() {
                     <div className="flex-1">
                         <h1 className="text-2xl md:text-3xl font-bold">{channel.channelName}</h1>
                         <p className="text-sm mt-1">
-                            {channel.subscribers.toString() || 0}{" "}
-                            subscribers
+                            {(channel.subscribers || 0).toString()} subscribers
                         </p>
                         <p className="text-sm 700 mt-3 max-w-2xl">{channel.description}</p>
                     </div>
