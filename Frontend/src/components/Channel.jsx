@@ -18,12 +18,16 @@ function Channel() {
         (video) => video.channelId === id
     )
 
-    // const isOwner = true
-    const isOwner = false
+    const isOwner = true
+    // const isOwner = false
 
     function handleDelete(videoId) {
         console.log("Delete video:", videoId);
     };
+
+    function handleEdit(videoId) {
+        navigate(`/editvideo/${videoId}`)
+    }
 
     if (!channel) {
         return (
@@ -81,17 +85,17 @@ function Channel() {
                     ) : (
                         <div className="grid grid-cols-4 gap-5">
                             {channelVideos.map((video) => (
-                                <div key={video._id} onClick={() => navigate(`/videoplayer/${video._id}`)}>
-                                    <div className="relative cursor-pointer">
+                                <div key={video._id}>
+                                    <div className="relative cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)}>
                                         <img src={video.thumbnailUrl} className="w-full aspect-video object-cover rounded-xl" />
                                     </div>
                                     <div className="mt-3">
-                                        <h3 className="font-semibold text-sm line-clamp-2 cursor-pointer">{video.title}</h3>
+                                        <h3 className="font-semibold text-sm line-clamp-2 cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)} x>{video.title}</h3>
                                         <p className="text-sm mt-2">{video.views.toString() || 0}{" "}views</p>
                                         <p className="text-sm">{video.category}</p>
                                         {isOwner && (
                                             <div className="flex gap-3 mt-3">
-                                                <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm">
+                                                <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm" onClick={() => handleEdit(video._id)}>
                                                     <BiSolidEdit />
                                                     Edit
                                                 </button>
