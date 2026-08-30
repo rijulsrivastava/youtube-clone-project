@@ -1,9 +1,10 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useOutletContext } from "react-router";
 import videos from "../utilis/mockData";
 import { BiSolidDislike, BiSolidLike } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
 import Comments from "./Comments";
+import { useState, useEffect } from "react";
 
 function VideoPlayer() {
 
@@ -13,6 +14,57 @@ function VideoPlayer() {
     console.log(video)
 
     const suggestedVideos = videos.filter((video) => video._id != id)
+    const { user } = useOutletContext()
+
+    const [liked, setLiked] = useState(false)
+    const [disliked, setDisliked] = useState(false)
+    const [likeCount, setLikeCount] = useState(0)
+    const [dislikeCount, setDislikeCount] = useState(0)
+
+    useEffect(() => {
+        if (video) {
+            setLikeCount(video.likes || 0);
+            setDislikeCount(video.dislikes || 0);
+        }
+    }, [id])
+
+    function handleLike() {
+        if (!user) {
+            alert("Login to like the video")
+            navigate("/login")
+            return
+        }
+        if (liked) {
+            setLiked(false)
+            setLikeCount(likeCount - 1)
+            return
+        }
+        if (disliked) {
+            setDisliked(false)
+            setDislikeCount(dislikeCount - 1)
+        }
+        setLiked(true)
+        setLikeCount(likeCount + 1)
+    }
+
+    function handleDislike() {
+        if (!user) {
+            alert("Login to dislike the video")
+            navigate("/login")
+            return
+        }
+        if (disliked) {
+            setDisliked(false)
+            setDislikeCount(dislikeCount - 1)
+            return
+        }
+        if (liked) {
+            setLiked(false)
+            setLikeCount(likeCount - 1)
+        }
+        setDisliked(true)
+        setDislikeCount(dislikeCount + 1)
+    }
 
     if (!video) {
         return (
@@ -44,25 +96,17 @@ function VideoPlayer() {
                             <p className="text-sm text-gray-500 mt-1"> {video.views ? video.views.toString() : 0} views</p>
                         </div>
                         <div className="flex items-center">
-                            <button className="flex items-center gap-2 px-5 py-2 border">
+                            <button className="flex items-center gap-2 px-5 py-2 border" onClick={handleLike}>
                                 <span className="text-lg">
                                     <BiSolidLike />
                                 </span>
-                                <span className="font-medium">
-                                    {Array.isArray(video.likes)
-                                        ? video.likes.length
-                                        : video.likes || 0}
-                                </span>
+                                <span className="font-medium">{likeCount}</span>
                             </button>
-                            <button className="flex items-center gap-2 px-5 py-2 border">
+                            <button className="flex items-center gap-2 px-5 py-2 border" onClick={handleDislike}>
                                 <span className="text-lg">
                                     <BiSolidDislike />
                                 </span>
-                                <span className="font-medium">
-                                    {Array.isArray(video.dislikes)
-                                        ? video.dislikes.length
-                                        : video.dislikes || 0}
-                                </span>
+                                <span className="font-medium">{dislikeCount}</span>
                             </button>
                         </div>
                     </div>

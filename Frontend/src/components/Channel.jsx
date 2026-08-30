@@ -90,7 +90,7 @@ function Channel() {
                                         <img src={video.thumbnailUrl} className="w-full aspect-video object-cover rounded-xl" />
                                     </div>
                                     <div className="mt-3">
-                                        <h3 className="font-semibold text-sm line-clamp-2 cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)} x>{video.title}</h3>
+                                        <h3 className="font-semibold text-sm line-clamp-2 cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)}>{video.title}</h3>
                                         <p className="text-sm mt-2">{video.views.toString() || 0}{" "}views</p>
                                         <p className="text-sm">{video.category}</p>
                                         {isOwner && (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { BiSolidEdit, BiSolidTrash } from "react-icons/bi";
 import videos from "../utilis/mockData.js";
 
@@ -12,18 +12,24 @@ function Comments({ id }) {
     const [error, setError] = useState("");
 
     const video = videos.find((video) => video._id === id);
-    const [comments, setComments] = useState(video.comments || [])
+    const [comments, setComments] = useState(video ? video.comments : [])
+    const { user } = useOutletContext()
 
     const handleAddComment = (e) => {
         e.preventDefault()
+        if (!user) {
+            alert("Login to comment on  the video")
+            navigate("/login")
+            return
+        }
         if (!commentText.trim()) {
             return
         }
 
         const newComment = {
-            _id: Date.now().toString(),
+            commentId: Date.now().toString(),
             text: commentText.trim(),
-            userId: "User",
+            userId: user.username,
             timestamp: new Date().toISOString()
         }
 
@@ -31,7 +37,7 @@ function Comments({ id }) {
         setCommentText("")
     }
     const handleEditStart = (comment) => {
-        setEditingCommentId(comment._id)
+        setEditingCommentId(comment.commentId)
         setEditText(comment.text)
     }
     const handleUpdateComment = (commentId) => {
@@ -40,7 +46,7 @@ function Comments({ id }) {
         }
         setComments((prevComments) =>
             prevComments.map((comment) =>
-                comment._id === commentId
+                comment.commentId === commentId
                     ? { ...comment, text: editText.trim() }
                     : comment
             )
@@ -51,7 +57,7 @@ function Comments({ id }) {
     const handleDeleteComment = (commentId) => {
         setComments((prevComments) =>
             prevComments.filter(
-                (comment) => comment._id !== commentId
+                (comment) => comment.commentId !== commentId
             )
         )
     }
@@ -80,7 +86,7 @@ function Comments({ id }) {
             <form onSubmit={handleAddComment} className="mb-8">
                 <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Add a comment" rows="3" className="w-full border p-3 outline-none " />
                 <div className="flex justify-end mt-3">
-                    <button type="submit" disabled={!commentText.trim()} className="px-5 py-2 font-medium  disabled:cursor-not-allowed">
+                    <button type="submit" disabled={!commentText.trim()} className="px-5 py-2 font-medium border  disabled:cursor-not-allowed">
                         Comment
                     </button>
                 </div>
@@ -90,7 +96,7 @@ function Comments({ id }) {
             ) : (
                 <div className="space-y-7">
                     {comments.map((comment) => (
-                        <div key={comment._id} className="flex gap-3">
+                        <div key={comment.commentId} className="flex gap-3">
                             <div className="w-10 h-10 flex-shrink-0 bg-gray-200 rounded-full flex items-center justify-center font-bold">
                                 {comment.userId ? comment.userId.charAt(0).toUpperCase() : "U"}
                             </div>
@@ -105,11 +111,11 @@ function Comments({ id }) {
                                         </span>
                                     )}
                                 </div>
-                                {editingCommentId === comment._id ? (
+                                {editingCommentId === comment.commentId ? (
                                     <div className="mt-2">
                                         <textarea value={editText} onChange={(e) => setEditText(e.target.value)} rows="3" className="w-full border rounded-lg p-3" />
                                         <div className="flex gap-2 mt-2">
-                                            <button type="button" onClick={() => handleUpdateComment(comment._id)} disabled={!editText.trim()} className="px-4 py-2 text-sm  disabled:bg-gray-300">
+                                            <button type="button" onClick={() => handleUpdateComment(comment.commentId)} disabled={!editText.trim()} className="px-4 py-2 text-sm  disabled:bg-gray-300">
                                                 Save
                                             </button>
 
@@ -122,13 +128,13 @@ function Comments({ id }) {
                                     <p className="mt-1 text-sm break-words">{comment.text}</p>
                                 )}
 
-                                {editingCommentId !== comment._id && (
+                                {user && comment.userId === user.username && editingCommentId !== comment.commentId && (
                                     <div className="flex items-center gap-4 mt-2">
                                         <button type="button" onClick={() => handleEditStart(comment)} className="flex items-center gap-1 text-sm">
                                             <BiSolidEdit />
                                             Edit
                                         </button>
-                                        <button type="button" onClick={() => handleDeleteComment(comment._id)} className="flex items-center gap-1 text-sm text-gray-600 hover:text-red-600">
+                                        <button type="button" onClick={() => handleDeleteComment(comment.commentId)} className="flex items-center gap-1 text-sm text-gray-600 hover:text-red-600">
                                             <BiSolidTrash />
                                             Delete
                                         </button>
