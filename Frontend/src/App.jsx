@@ -18,14 +18,14 @@ function App() {
       ? JSON.parse(storedUser)
       : null
   })
-
+  const [search, setSearch] = useState("")
   return (
     <div className='m-5'>
-      <Header toggleMenu={toggleMenu} user={user} setUser={setUser} />
+      <Header toggleMenu={toggleMenu} user={user} setUser={setUser} setSearch={setSearch} />
       <div className='flex gap-5 mt-5'>
         {isMenuOpen ? <SideMenu /> : null}
         <main className="flex-1">
-          <Outlet context={{ setUser }} />
+          <Outlet context={{ setUser, setSearch, search }} />
         </main>
       </div>
     </div>

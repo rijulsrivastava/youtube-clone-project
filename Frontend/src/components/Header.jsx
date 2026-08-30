@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router"
 import { IoPersonCircleOutline, IoLogOutOutline } from "react-icons/io5";
 
-function Header({ toggleMenu, user, setUser }) {
+function Header({ toggleMenu, user, setUser, setSearch }) {
 
     const navigate = useNavigate()
     const [searchText, setSearchText] = useState("")
@@ -12,8 +12,13 @@ function Header({ toggleMenu, user, setUser }) {
 
     function handleSearch(e) {
         e.preventDefault()
-        setSearchText("")
+        setSearch(searchText.trim())
     }
+    useEffect(() => {
+        if (searchText.trim() == "") {
+            setSearch("")
+        }
+    }, [searchText])
 
     function handleClick() {
         setSearchText("")
@@ -40,10 +45,10 @@ function Header({ toggleMenu, user, setUser }) {
                     <p>Youtube</p>
                 </div>
             </div>
-            <div className="flex items-center gap-2 px-2 border">
+            <form onSubmit={handleSearch} className="flex items-center gap-2 px-2 border">
                 <input type="text" className="border" onChange={(e) => setSearchText(e.target.value)} value={searchText} />
-                <button onClick={handleSearch}>Search</button>
-            </div>
+                <button type="submit">Search</button>
+            </form>
             <nav className=" flex ">
                 {user ? (
                     <div className="relative flex items-center gap-3">
