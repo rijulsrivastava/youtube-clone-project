@@ -14,9 +14,14 @@ function App() {
   }
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("demo-user")
-    return storedUser
-      ? JSON.parse(storedUser)
-      : null
+    if (!storedUser) return null
+    try {
+      return JSON.parse(storedUser)
+    } catch (err) {
+      console.error("Invalid demo-user data:", err)
+      localStorage.removeItem("demo-user")
+      return null
+    }
   })
   const [search, setSearch] = useState("")
   return (
@@ -25,7 +30,7 @@ function App() {
       <div className='flex gap-5 mt-5'>
         {isMenuOpen ? <SideMenu /> : null}
         <main className="flex-1">
-          <Outlet context={{ setUser, setSearch, search }} />
+          <Outlet context={{ setUser, setSearch, search, user }} />
         </main>
       </div>
     </div>

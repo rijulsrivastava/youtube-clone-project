@@ -41,14 +41,15 @@ function Login() {
                 return
             }
             const registeredUser = JSON.parse(storedUser)
-            if (form.email !== registeredUser.email || form.password !== registeredUser.password) {
+            if (form.email.trim() !== registeredUser.email || form.password !== registeredUser.password) {
                 setError("Invalid credentials")
                 return
             }
             const user = {
                 _id: registeredUser._id,
                 username: registeredUser.username,
-                email: registeredUser.email
+                email: registeredUser.email,
+                channelId: registeredUser.channelId || null
             }
             console.log(user)
             const demoToken = "frontend-demo-token";

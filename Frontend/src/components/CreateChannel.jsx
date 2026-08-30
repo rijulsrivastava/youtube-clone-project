@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router"
+import { useNavigate, useOutletContext } from "react-router"
 import channels from "../utilis/mockChannelData";
 
 function CreateChannel() {
 
     const navigate = useNavigate()
-
+    const { user, setUser } = useOutletContext();
     const [form, setForm] = useState({
         channelName: "",
         description: "",
@@ -53,7 +53,9 @@ function CreateChannel() {
 
             console.log(createdChannel)
             channels.push(createdChannel)
-            //////////////////
+            const updatedUser = { ...user, channelId: createdChannel._id }
+            localStorage.setItem("demo-user", JSON.stringify(updatedUser))
+            setUser(updatedUser)
             navigate(`/channel/${createdChannel._id}`)
 
         } catch (err) {

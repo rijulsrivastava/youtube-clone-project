@@ -3,14 +3,15 @@ import { SiYoutubeshorts, SiYoutubegaming } from "react-icons/si"
 import { MdSubscriptions, MdHistory, MdWatchLater, MdOutlineNewspaper } from "react-icons/md"
 import { BiSolidLike } from "react-icons/bi"
 import { IoMdTrendingUp, IoIosMusicalNotes } from "react-icons/io"
+import { Link } from 'react-router'
 
 function SideMenu() {
     return (
         <aside className="flex flex-col gap-2 mt-5 w-[15%]">
-            <div className=" flex gap-2 ml-2 items-center">
+            <Link to={'/'} className=" flex gap-2 ml-2 items-center">
                 <TiHome />
                 <span>Home</span>
-            </div>
+            </Link>
             <div className=" flex gap-2 ml-2 items-center">
                 <SiYoutubeshorts />
                 <span>Shorts</span>
