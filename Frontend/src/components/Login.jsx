@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router";
 
 function Login() {
+
+    const navigate = useNavigate()
+    const { setUser } = useOutletContext();
     const [form, setForm] = useState({
         email: "",
         password: ""
@@ -16,6 +20,8 @@ function Login() {
     function validateForm() {
         if (!form.email.trim()) return "Enter email"
         if (!form.password) return "Enter Password"
+        if (form.password.length < 10) return "Password must be 10 characters or more"
+        return null
     }
 
     function handleSubmit(e) {
@@ -25,10 +31,32 @@ function Login() {
         const validation = validateForm();
         if (validation) {
             setError(validation)
+            return
         }
         try {
             setLoading(true)
-            console.log(form)
+            const storedUser = localStorage.getItem("registered-user");
+            if (!storedUser) {
+                setError("User is not registered")
+                return
+            }
+            const registeredUser = JSON.parse(storedUser)
+            if (form.email !== registeredUser.email || form.password !== registeredUser.password) {
+                setError("Invalid credentials")
+                return
+            }
+            const user = {
+                _id: registeredUser._id,
+                username: registeredUser.username,
+                email: registeredUser.email
+            }
+            console.log(user)
+            const demoToken = "frontend-demo-token";
+            localStorage.setItem("demo-user", JSON.stringify(user))
+            localStorage.setItem("demo-token", demoToken)
+            setUser(user)
+            navigate("/")
+
         } catch (err) {
             setError(err.message)
         } finally {
@@ -52,7 +80,7 @@ function Login() {
                 </div>
                 <button type="submit" className="border p-2 w-full mt-8 mb-4" disabled={loading}>{loading ? "Signing In..." : "Sign In"}</button>
                 <p>Don't have an account?
-                    <button type="button"> Register</button>
+                    <button type="button" onClick={() => navigate("/register")} className="hover:text-blue-800"> Register</button>
                 </p>
             </form >
         </div >

@@ -12,14 +12,20 @@ function App() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   }
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("demo-user")
+    return storedUser
+      ? JSON.parse(storedUser)
+      : null
+  })
 
   return (
     <div className='m-5'>
-      <Header toggleMenu={toggleMenu} />
+      <Header toggleMenu={toggleMenu} user={user} setUser={setUser} />
       <div className='flex gap-5 mt-5'>
         {isMenuOpen ? <SideMenu /> : null}
         <main className="flex-1">
-          <Outlet />
+          <Outlet context={{ setUser }} />
         </main>
       </div>
     </div>

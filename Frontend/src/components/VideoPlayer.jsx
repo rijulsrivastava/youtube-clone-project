@@ -82,7 +82,7 @@ function VideoPlayer() {
                 <h3 className="text-2xl font-bold mb-4">Suggested Videos</h3>
                 <div className="flex flex-col gap-4">
                     {suggestedVideos.map((suggestedVideo) => (
-                        <div key={suggestedVideo._id} onClick={() => navigate(`/watch/${suggestedVideo._id}`)} className="flex gap-3 cursor-pointer">
+                        <div key={suggestedVideo._id} onClick={() => navigate(`/videoplayer/${suggestedVideo._id}`)} className="flex gap-3 cursor-pointer">
                             <div className="w-[150px] flex-shrink-0">
                                 <img src={suggestedVideo.thumbnailUrl} alt={suggestedVideo.title} className="w-full aspect-video object-cover" />
                             </div>

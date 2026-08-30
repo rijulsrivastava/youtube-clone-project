@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 function RegisterUser() {
+
+    const navigate = useNavigate()
 
     const [form, setForm] = useState({
         username: "",
@@ -19,6 +22,7 @@ function RegisterUser() {
         if (!form.username.trim()) return "Enter username"
         if (!form.email.trim()) return "Enter email"
         if (!form.password) return "Enter Password"
+        return null
     }
 
     async function handleSubmit(e) {
@@ -28,10 +32,20 @@ function RegisterUser() {
         const validation = validateForm();
         if (validation) {
             setError(validation)
+            return
         }
         try {
             setLoading(true)
             console.log(form)
+            const newUser = {
+                _id: `user${Date.now()}`,
+                username: form.username.trim(),
+                email: form.email.trim(),
+                password: form.password
+            }
+            localStorage.setItem("registered-user", JSON.stringify(newUser))
+            
+            navigate('/login')
         } catch (err) {
             setError(err.message)
         } finally {
@@ -59,7 +73,7 @@ function RegisterUser() {
                 </div>
                 <button type="submit" disabled={loading} className="border p-2 w-full mt-8 mb-4"> {loading ? "Creating Account..." : "Register"} </button>
                 <p>Already have an account?
-                    <button type="button" onClick={() => navigate("/login")}> Sign In</button>
+                    <button type="button" className="hover:text-blue-800" onClick={() => navigate("/login")}> Sign In</button>
                 </p>
             </form>
         </div >
