@@ -21,7 +21,8 @@ const channelSchema = new mongoose.Schema(
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             unique: true,
-            required: true
+            required: true,
+            ref: "User"
         }
     },
     { timestamps: true }

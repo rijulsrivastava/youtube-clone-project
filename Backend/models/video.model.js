@@ -26,10 +26,12 @@ const videoSchema = new mongoose.Schema(
             default: 0
         },
         likes: [{
-            type: mongoose.Schema.Types.ObjectId
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }],
         dislikes: [{
-            type: mongoose.Schema.Types.ObjectId
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }],
         description: {
             type: String,
@@ -49,7 +51,8 @@ const videoSchema = new mongoose.Schema(
         },
         uploader: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true
+            required: true,
+            ref: "User"
         },
     },
     { timestamps: true }

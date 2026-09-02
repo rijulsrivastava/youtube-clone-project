@@ -1,8 +1,8 @@
-import videoModel from '../models/video.model.js'
+import VideoModel from '../models/video.model.js'
 
 async function readVideo(req, res) {
     try {
-        const allVideos = await videoModel.find()
+        const allVideos = await VideoModel.find()
         return res.status(200).json(allVideos)
     }
     catch (err) {
@@ -12,7 +12,7 @@ async function readVideo(req, res) {
 
 async function readVideoById(req, res) {
     try {
-        const filteredVideo = await videoModel.findById(req.params.id)
+        const filteredVideo = await VideoModel.findById(req.params.id)
 
         if (!filteredVideo) {
             return res.status(404).json({ msg: "Video doesn't exist" })
@@ -28,7 +28,7 @@ async function updateVideo(req, res) {
     try {
         const { id } = req.params
         const { title, description, thumbnailUrl, videoUrl, category, channelId } = req.body
-        const updatedVideo = await videoModel.findByIdAndUpdate(id, { title, description, thumbnailUrl, videoUrl, category, channelId }, { new: true })
+        const updatedVideo = await VideoModel.findByIdAndUpdate(id, { title, description, thumbnailUrl, videoUrl, category, channelId }, { new: true })
 
         if (!updatedVideo) {
             return res.status(404).json({ msg: "Video doesn't exist" })
@@ -44,12 +44,12 @@ async function removeVideo(req, res) {
     try {
         const { id } = req.params
 
-        const video = await videoModel.findById(id)
+        const video = await VideoModel.findById(id)
         if (!video) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }
 
-        await videoModel.findByIdAndDelete(id)
+        await VideoModel.findByIdAndDelete(id)
 
         return res.status(200).json({ msg: "Video is removed" })
 
@@ -61,7 +61,7 @@ async function removeVideo(req, res) {
 async function likeVideo(req, res) {
     try {
         const { id } = req.params
-        const video = await videoModel.findById(id)
+        const video = await VideoModel.findById(id)
         if (!video) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }
@@ -84,7 +84,7 @@ async function likeVideo(req, res) {
 async function dislikeVideo(req, res) {
     try {
         const { id } = req.params
-        const video = await videoModel.findById(id)
+        const video = await VideoModel.findById(id)
         if (!video) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }

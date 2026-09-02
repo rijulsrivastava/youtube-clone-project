@@ -1,5 +1,5 @@
-import Comment from "../models/comment.model.js"
-import Video from "../models/video.model.js"
+import CommentModel from "../models/comment.model.js"
+import VideoModel from "../models/video.model.js"
 
 async function createComment(req, res) {
     try {
@@ -7,16 +7,16 @@ async function createComment(req, res) {
         if (!videoId || !text || text.trim() == "") {
             return res.status(400).json({ msg: "All fields are required" })
         }
-        const video = await Video.findById(videoId);
+        const video = await VideoModel.findById(videoId);
         if (!video) {
-            return res.status(404).json({ msg: "Video does not exist" })
+            return res.status(404).json({ msg: "VideoModel does not exist" })
         }
-        const comment = await Comment.create({
+        const comment = await CommentModel.create({
             videoId,
             userId: req.user._id,
             text: text.trim()
         })
-        const newComment = await Comment.findById(comment._id).populate("userId", "username")
+        const newComment = await CommentModel.findById(comment._id).populate("userId", "username")
         res.status(201).json(newComment)
 
     } catch (err) {
@@ -28,17 +28,17 @@ async function createComment(req, res) {
 async function updateComment(req, res) {
     try {
         const { id } = req.params
-        const comment = await Comment.findById(id)
+        const comment = await CommentModel.findById(id)
         const { text } = req.body
         if (!comment) {
-            return res.status(404).json({ msg: "Comment does not exist" })
+            return res.status(404).json({ msg: "CommentModel does not exist" })
         }
         if (!text || text.trim() == "") {
             return res.status(400).json({ msg: "Add comment to update" })
         }
         comment.text = text.trim()
         await comment.save()
-        const updatedComment = await Comment.findById(comment._id).populate("userId", "username")
+        const updatedComment = await CommentModel.findById(comment._id).populate("userId", "username")
         res.status(200).json(updatedComment)
 
     } catch (err) {
@@ -50,12 +50,12 @@ async function updateComment(req, res) {
 async function removeComment(req, res) {
     try {
         const { id } = req.params
-        const comment = await Comment.findById(id)
+        const comment = await CommentModel.findById(id)
         if (!comment) {
-            return res.status(404).json({ msg: "Comment does not exist" })
+            return res.status(404).json({ msg: "CommentModel does not exist" })
         }
         await comment.deleteOne()
-        res.status(200).json({ message: "Comment deleted successfully" })
+        res.status(200).json({ message: "CommentModel deleted successfully" })
     } catch (err) {
         console.error(err)
         res.status(500).json({ msg: "Error while deleting comment" })
