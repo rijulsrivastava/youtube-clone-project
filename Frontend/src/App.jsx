@@ -8,7 +8,7 @@ import { Outlet } from 'react-router';
 
 function App() {
 
-  const [isMenuOpen, setIsMenuOpen] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   }
@@ -25,11 +25,11 @@ function App() {
   })
   const [search, setSearch] = useState("")
   return (
-    <div className='m-5'>
+    <div className="min-h-screen bg-white mx-2 sm:mx-4 md:mx-6 lg:mx-8">
       <Header toggleMenu={toggleMenu} user={user} setUser={setUser} setSearch={setSearch} />
-      <div className='flex gap-5 mt-5'>
+      <div className="relative flex gap-4 mt-4 md:gap-6 md:mt-5 items-start">
         {isMenuOpen ? <SideMenu /> : null}
-        <main className="flex-1">
+        <main className="flex-1 min-w-0">
           <Outlet context={{ setUser, setSearch, search, user }} />
         </main>
       </div>

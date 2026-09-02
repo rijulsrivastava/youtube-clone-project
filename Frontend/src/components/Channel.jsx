@@ -44,29 +44,29 @@ function Channel() {
 
     return (
         <div className="min-h-screen bg-white">
-            <div className="w-full h-40 overflow-hidden">
+            <div className="w-full h-32 sm:h-40 md:h-48 overflow-hidden">
                 <img src={channel.channelBanner} alt={`${channel.channelName} banner`} className="w-full h-full object-cover" />
             </div>
 
             <div className="max-w-7xl mx-auto px-4 md:px-8">
-                <div className="flex flex-col md:flex-row md:items-center gap-5 py-6 border-b">
-                    <img src={channel.avatar} alt={channel.channelName} className="w-20 h-20  rounded-full object-cover" />
+                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 py-5 md:py-6 border-b">
+                    <img src={channel.avatar} alt={channel.channelName} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover" />
                     <div className="flex-1">
                         <h1 className="text-2xl md:text-3xl font-bold">{channel.channelName}</h1>
                         <p className="text-sm mt-1">
                             {(channel.subscribers || 0).toString()} subscribers
                         </p>
-                        <p className="text-sm 700 mt-3 max-w-2xl">{channel.description}</p>
+                        <p className="text-sm mt-3 max-w-2xl">{channel.description}</p>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-6 py-4 border-b">
+                <div className="flex items-center gap-5 sm:gap-6 py-4 border-b">
                     <button className="font-semibold border-b-2  pb-3">Videos</button>
                     <button className="pb-3 ">About</button>
                 </div>
                 <section className="py-6">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="text-2xl font-bold">Videos</h2>
+                        <h2 className="text-xl sm:text-2xl font-bold">Videos</h2>
                         {isOwner && (
                             <span className="text-sm">
                                 {channelVideos.length} videos
@@ -83,7 +83,7 @@ function Channel() {
                             )}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-4 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                             {channelVideos.map((video) => (
                                 <div key={video._id}>
                                     <div className="relative cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)}>
@@ -94,7 +94,7 @@ function Channel() {
                                         <p className="text-sm mt-2">{video.views.toString() || 0}{" "}views</p>
                                         <p className="text-sm">{video.category}</p>
                                         {isOwner && (
-                                            <div className="flex gap-3 mt-3">
+                                            <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
                                                 <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm" onClick={() => handleEdit(video._id)}>
                                                     <BiSolidEdit />
                                                     Edit

@@ -16,11 +16,11 @@ function HomePage() {
         (video) => video.title.toLowerCase().includes(search.toLowerCase()))
 
     return (
-        <main>
+        <main className="min-h-screen px-2 sm:px-4">
             <CategoryFiltering filterCategory={filterCategory} setFilterCategory={setFilterCategory} />
             {filteredVideos.length > 0
                 ? <VideoList videos={filteredVideos} />
-                : <h2 className="text-center mt-10">No videos found</h2>}
+                : <h2 className="text-center text-lg sm:text-xl mt-10">No videos found</h2>}
         </main >
     )
 }

@@ -117,35 +117,35 @@ function EditVideo() {
     }
 
     return (
-        <div className="min-h-[calc(100vh-64px)] px-4 py-8">
+        <div className="min-h-[calc(100vh-64px)] px-4 py-6 sm:py-8">
             <div className="max-w-3xl mx-auto">
-                <form onSubmit={handleSubmit} className="border p-6">
-                    <h1 className="text-3xl font-bold">Edit Video</h1>
-                    <p className="mt-2 mb-6">Update video content</p>
+                <form onSubmit={handleSubmit} className="border border-gray-300 rounded-2xl shadow-md p-4 sm:p-6 md:p-8">
+                    <h1 className="text-2xl sm:text-3xl font-bold">Edit Video</h1>
+                    <p className="mt-2 mb-6 text-sm sm:text-base">Update video content</p>
                     {error && (
-                        <div className="mb-5 px-4 py-3">
+                        <div className="mb-5 px-4 py-3 text-center text-sm  text-red-700 bg-red-100 border border-red-300 rounded-lg">
                             {error}
                         </div>
                     )}
                     <div className="mb-5">
                         <label className="block text-sm font-semibold mb-2">Video Title</label>
-                        <input type="text" name="title" value={form.title} onChange={handleChange} placeholder="Enter video title" className="w-full px-4 py-3 border" />
+                        <input type="text" name="title" value={form.title} onChange={handleChange} placeholder="Enter video title" className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none" />
                     </div>
                     <div className="mb-5">
                         <label className="block text-sm font-semibold mb-2">Description</label>
-                        <textarea name="description" value={form.description} onChange={handleChange} rows="5" placeholder="Enter video description" className="w-full px-4 py-3 border" />
+                        <textarea name="description" value={form.description} onChange={handleChange} rows="5" placeholder="Enter video description" className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none" />
                     </div>
                     <div className="mb-5">
                         <label className="block text-sm font-semibold mb-2">Video URL</label>
-                        <input type="url" name="videoUrl" value={form.videoUrl} onChange={handleChange} placeholder="https://abc.com/xyz.mp4" className="w-full px-4 py-3 border" />
+                        <input type="url" name="videoUrl" value={form.videoUrl} onChange={handleChange} placeholder="https://abc.com/xyz.mp4" className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none" />
                     </div>
                     <div className="mb-5">
                         <label className="block text-sm font-semibold mb-2">Thumbnail URL</label>
-                        <input type="url" name="thumbnailUrl" value={form.thumbnailUrl} onChange={handleChange} placeholder="https://abc.com/xyz.jpg" className="w-full px-4 py-3 border" />
+                        <input type="url" name="thumbnailUrl" value={form.thumbnailUrl} onChange={handleChange} placeholder="https://abc.com/xyz.jpg" className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none" />
                     </div>
                     <div className="mb-6">
                         <label className="block text-sm font-semibold mb-2">Category</label>
-                        <select name="category" value={form.category} onChange={handleChange} className="w-full px-4 py-3 border">
+                        <select name="category" value={form.category} onChange={handleChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none">
                             <option value="">Select a category</option>
                             {categories.map((category) => (
                                 <option key={category} value={category}>
@@ -154,13 +154,13 @@ function EditVideo() {
                             ))}
                         </select>
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <button disabled={saving} className="flex-1 font-semibold py-3 disabled:cursor-not-allowed">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        <button disabled={saving} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition disabled:cursor-not-allowed disabled:bg-green-400">
                             {saving
                                 ? "Saving Changes..."
                                 : "Save Changes"}
                         </button>
-                        <button type="button" onClick={() => navigate('/')} className="flex-1 font-semibold py-3">Cancel</button>
+                        <button type="button" onClick={() => navigate('/')} className="flex-1 border border-gray-300 font-bold py-3 rounded-lg hover:bg-gray-100 transition">Cancel</button>
                     </div>
                 </form>
             </div>

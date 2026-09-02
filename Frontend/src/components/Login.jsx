@@ -66,25 +66,25 @@ function Login() {
     };
 
     return (
-        <div className="flex justify-center h-[90vh]  mt-5">
-            < form className="flex flex-col w-[500px] items-center mt-10 mb-8 border p-6" onSubmit={handleSubmit}>
-                <h1 className="text-4xl mb-2">Sign In</h1>
-                <p><i>Sign in to youtube</i></p>
-                {error && <p className="bg-red-100 border border-red-300 text-red-700 px-2 py-1 mt-5">{error}</p>}
+        <div className="flex justify-center items-center px-4">
+            <form className="flex flex-col w-full max-w-[500px] items-center my-8 sm:my-10 shadow-md border p-4 sm:p-6 md:p-8 rounded-2xl border-gray-200" onSubmit={handleSubmit}>
+                <h1 className="text-3xl font-bold sm:text-4xl mb-2">Sign In</h1>
+                <p className="text-sm sm:text-base text-center"><i>Sign in to youtube</i></p>
+                {error && <p className="w-full bg-red-100 border border-red-300 rounded-lg text-red-700 text-center text-sm px-3 py-2 mt-5">{error}</p>}
                 <div className="flex flex-col w-full my-6">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="Enter email" value={form.email} onChange={handleChange} className="border p-2 mt-2" />
+                    <input type="email" name="email" placeholder="Enter email" value={form.email} onChange={handleChange} className="w-full border border-gray-300 rounded-lg mt-2 px-3 py-2 outline-none" />
                 </div>
                 <div className="flex flex-col w-full my-6">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Enter password" value={form.password} onChange={handleChange} className="border p-2 mt-2" />
+                    <input type="password" name="password" placeholder="Enter password" value={form.password} onChange={handleChange} className="w-full border border-gray-300 rounded-lg mt-2 px-3 py-2 outline-none" />
                 </div>
-                <button type="submit" className="border p-2 w-full mt-8 mb-4" disabled={loading}>{loading ? "Signing In..." : "Sign In"}</button>
+                <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition p-2 w-full mt-8 mb-4 disabled:cursor-not-allowed disabled:bg-green-400" disabled={loading}>{loading ? "Signing In..." : "Sign In"}</button>
                 <p>Don't have an account?
-                    <button type="button" onClick={() => navigate("/register")} className="hover:text-blue-800"> Register</button>
+                    <button type="button" onClick={() => navigate("/register")} className="text-blue-600 font-bold hover:text-blue-800 transition ml-1"> Register</button>
                 </p>
-            </form >
-        </div >
+            </form>
+        </div>
     )
 }
 

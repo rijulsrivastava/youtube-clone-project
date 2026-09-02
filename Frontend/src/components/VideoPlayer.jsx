@@ -77,74 +77,76 @@ function VideoPlayer() {
     }
 
     return (
-        <div className="flex min-h-screen gap-5 px-4 py-6 md:px-8">
-            <div className="max-w-8xl flex-1 mx-auto">
-                <div className="w-full aspect-video">
-                    {video.videoUrl ? (
-                        < video src={video.videoUrl} poster={video.thumbnailUrl} controls className="w-full h-full object-contain" ></video>
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <p>Video unavailable</p>
-                        </div>
-                    )}
-                </div>
-                <div className="mt-5">
-                    <h1 className="text-3xl font-bold">{video.title}</h1>
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4">
-                        <div>
-                            <p className="text-lg font-bold">{video.channelName || "Sample Channel"}</p>
-                            <p className="text-sm text-gray-500 mt-1"> {video.views ? video.views.toString() : 0} views</p>
-                        </div>
-                        <div className="flex items-center">
-                            <button className="flex items-center gap-2 px-5 py-2 border" onClick={handleLike}>
-                                <span className="text-lg">
-                                    <BiSolidLike />
-                                </span>
-                                <span className="font-medium">{likeCount}</span>
-                            </button>
-                            <button className="flex items-center gap-2 px-5 py-2 border" onClick={handleDislike}>
-                                <span className="text-lg">
-                                    <BiSolidDislike />
-                                </span>
-                                <span className="font-medium">{dislikeCount}</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="mt-5 border p-4">
-                        <p className="font-bold mb-2">Description</p>
-                        <p className="text-sm text-gray-700 whitespace-pre-line">{video.description || "No description available."}</p>
-                    </div>
-                </div>
-
-                <div className="mt-8">
-                    <Comments id={id} />
-                </div>
-            </div>
-
-
-            <div className="w-[360px]">
-                <h3 className="text-2xl font-bold mb-4">Suggested Videos</h3>
-                <div className="flex flex-col gap-4">
-                    {suggestedVideos.map((suggestedVideo) => (
-                        <div key={suggestedVideo._id} onClick={() => navigate(`/videoplayer/${suggestedVideo._id}`)} className="flex gap-3 cursor-pointer">
-                            <div className="w-[150px] flex-shrink-0">
-                                <img src={suggestedVideo.thumbnailUrl} alt={suggestedVideo.title} className="w-full aspect-video object-cover" />
+        <div className="min-h-screen px-4 py-5 md:px-6 lg:px-8">
+            <div className="max-w-8xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-8">
+                <div className="flex-1 min-w-0">
+                    <div className="w-full aspect-video rounded-xl overflow-hidden">
+                        {video.videoUrl ? (
+                            < video src={video.videoUrl} poster={video.thumbnailUrl} controls className="w-full h-full object-contain" ></video>
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <p>Video unavailable</p>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                <h3 className="font-bold text-sm ">{suggestedVideo.title}</h3>
-                                <p className="text-xs mt-2">{suggestedVideo.channelName || "Sample Channel"}</p>
-                                <p className="text-xs mt-1">
-                                    {suggestedVideo.views
-                                        ? suggestedVideo.views.toString()
-                                        : 0}{" "}
-                                    views
-                                </p>
+                        )}
+                    </div>
+                    <div className="mt-4 sm:mt-5">
+                        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">{video.title}</h1>
+                        <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <p className="text-lg font-bold">{video.channelName || video.channelId || "Sample Channel"}</p>
+                                <p className="text-sm text-gray-500 mt-1"> {video.views ? video.views.toString() : 0} views</p>
+                            </div>
+                            <div className="flex items-center w-fit border border-gray-300 rounded-full overflow-hidden">
+                                <button className="flex items-center gap-2 px-4 sm:px-5 py-2 hover:bg-gray-100 transition" onClick={handleLike}>
+                                    <span className="text-lg">
+                                        <BiSolidLike />
+                                    </span>
+                                    <span className="font-medium">{likeCount}</span>
+                                </button>
+                                <button className="flex items-center gap-2 px-4 sm:px-5 py-2 border-l border-gray-300 hover:bg-gray-100 transition" onClick={handleDislike}>
+                                    <span className="text-lg">
+                                        <BiSolidDislike />
+                                    </span>
+                                    <span className="font-medium">{dislikeCount}</span>
+                                </button>
                             </div>
                         </div>
-                    ))}
+                        <div className="mt-5 bg-gray-200 rounded-lg p-4 md:p-5">
+                            <p className="font-bold mb-2">Description</p>
+                            <p className="text-sm text-gray-700 whitespace-pre-line">{video.description || "No description available."}</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-8">
+                        <Comments id={id} />
+                    </div>
                 </div>
-            </div>
-        </div >
+
+
+                <div className="w-full lg:w-[340px] xl:w-[360px] lg:flex-shrink-0">
+                    <h3 className="text-2xl font-bold mb-4">Suggested Videos</h3>
+                    <div className="flex flex-col gap-4">
+                        {suggestedVideos.map((suggestedVideo) => (
+                            <div key={suggestedVideo._id} onClick={() => navigate(`/videoplayer/${suggestedVideo._id}`)} className="flex gap-3 rounded-xl p-1 hover:bg-gray-100 transition cursor-pointer">
+                                <div className="w-[130px] sm:w-[150px] flex-shrink-0">
+                                    <img src={suggestedVideo.thumbnailUrl} alt={suggestedVideo.title} className="w-full rounded-xl aspect-video object-cover" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-sm line-clamp-1">{suggestedVideo.title}</h3>
+                                    <p className="text-xs mt-2">{suggestedVideo.channelName || suggestedVideo.channelId || "Sample Channel"}</p>
+                                    <p className="text-xs mt-1">
+                                        {suggestedVideo.views
+                                            ? suggestedVideo.views.toString()
+                                            : 0}{" "}
+                                        views
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div >
+        </div>
     )
 }
 
