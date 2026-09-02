@@ -2,7 +2,7 @@ import VideoModel from '../models/video.model.js'
 
 async function readVideo(req, res) {
     try {
-        const allVideos = await VideoModel.find()
+        const allVideos = await VideoModel.find().populate("channelId", "channelName avatar").populate("uploader", "username")
         return res.status(200).json(allVideos)
     }
     catch (err) {
@@ -12,8 +12,7 @@ async function readVideo(req, res) {
 
 async function readVideoById(req, res) {
     try {
-        const filteredVideo = await VideoModel.findById(req.params.id)
-
+        const filteredVideo = await VideoModel.findById(req.params.id).populate("channelId", "channelName avatar").populate("uploader", "username")
         if (!filteredVideo) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }

@@ -8,13 +8,16 @@ async function register(req, res) {
         if (!username?.trim() || !email?.trim() || !password) {
             return res.status(400).json({ msg: "All fields are required" });
         }
+        if (password.length < 10) {
+            return res.status(400).json({ msg: "Password must be 10 characters or more" })
+        }
         let data = await UserModel.findOne({ email: email.trim() })
         if (data) {
             return res.status(409).json({ msg: "user already exists" })
         } else {
             let newUser = await UserModel.create({
-                username,
-                email,
+                username: username.trim(),
+                email: email.trim(),
                 password: bcrypt.hashSync(password, 10)
             })
             return res.status(201).json({
@@ -47,7 +50,7 @@ async function login(req, res) {
                 return res.status(401).json({ msg: "Invalid credentials" })
             }
 
-            const token = jwt.sign({ id: data._id }, "secretKeyForYoutubeClone")
+            const token = jwt.sign({ id: data._id }, "secretKeyForYoutubeClone", { expiresIn: '1d' })
 
             return res.status(200).json({
                 user: {

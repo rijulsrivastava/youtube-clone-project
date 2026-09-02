@@ -1,6 +1,16 @@
 import CommentModel from "../models/comment.model.js"
 import VideoModel from "../models/video.model.js"
 
+async function readComment(req, res) {
+    try {
+        const { videoId } = req.params
+        const comments = await CommentModel.find({ videoId }).populate("userId", "username")
+        return res.status(200).json(comments)
+    } catch (err) {
+        return res.status(500).json({ msg: "Error while fetching comments" })
+    }
+}
+
 async function createComment(req, res) {
     try {
         const { videoId, text } = req.body;
@@ -9,7 +19,7 @@ async function createComment(req, res) {
         }
         const video = await VideoModel.findById(videoId);
         if (!video) {
-            return res.status(404).json({ msg: "VideoModel does not exist" })
+            return res.status(404).json({ msg: "Video does not exist" })
         }
         const comment = await CommentModel.create({
             videoId,
@@ -31,7 +41,10 @@ async function updateComment(req, res) {
         const comment = await CommentModel.findById(id)
         const { text } = req.body
         if (!comment) {
-            return res.status(404).json({ msg: "CommentModel does not exist" })
+            return res.status(404).json({ msg: "Comment does not exist" })
+        }
+        if (comment.userId.toString() != req.user._id.toString()) {
+            return res.status(403).json({ msg: "Not authorized to update comment" })
         }
         if (!text || text.trim() == "") {
             return res.status(400).json({ msg: "Add comment to update" })
@@ -52,14 +65,17 @@ async function removeComment(req, res) {
         const { id } = req.params
         const comment = await CommentModel.findById(id)
         if (!comment) {
-            return res.status(404).json({ msg: "CommentModel does not exist" })
+            return res.status(404).json({ msg: "Comment does not exist" })
+        }
+        if (comment.userId.toString() != req.user._id.toString()) {
+            return res.status(403).json({ msg: "Not authorized to delete comment" })
         }
         await comment.deleteOne()
-        res.status(200).json({ message: "CommentModel deleted successfully" })
+        res.status(200).json({ message: "Comment deleted successfully" })
     } catch (err) {
         console.error(err)
         res.status(500).json({ msg: "Error while deleting comment" })
     }
 }
 
-export { createComment, updateComment, removeComment }
+export { createComment, updateComment, removeComment, readComment }
