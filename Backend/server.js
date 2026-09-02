@@ -1,6 +1,7 @@
 import express from "express"
 import userRoute from './Routes/user.route.js'
 import mongoose from "mongoose"
+import videoRoute from "./Routes/video.route.js"
 
 const app = express()
 const PORT = 5050
@@ -17,6 +18,7 @@ mongoose.connect("mongodb+srv://rijulsrivastva_db_user:tN8TszFMzH5NTSS8@cluster0
 
 
 userRoute(app)
+videoRoute(app)
 
 app.listen(PORT, () => {
     console.log(`Server is running on port:${PORT}`)
