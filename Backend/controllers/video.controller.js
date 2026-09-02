@@ -28,11 +28,14 @@ async function updateVideo(req, res) {
     try {
         const { id } = req.params
         const { title, description, thumbnailUrl, videoUrl, category, channelId } = req.body
-        const updatedVideo = await VideoModel.findByIdAndUpdate(id, { title, description, thumbnailUrl, videoUrl, category, channelId }, { new: true })
-
-        if (!updatedVideo) {
+        const video = await VideoModel.findById(id)
+        if (!video) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }
+        if (video.uploader.toString() != req.user._id.toString()) {
+            return res.status(403).json({ msg: "Not authorized to update this video" })
+        }
+        const updatedVideo = await VideoModel.findByIdAndUpdate(id, { title, description, thumbnailUrl, videoUrl, category, channelId }, { new: true })
         return res.status(200).json(updatedVideo)
 
     } catch (er) {
@@ -48,7 +51,9 @@ async function removeVideo(req, res) {
         if (!video) {
             return res.status(404).json({ msg: "Video doesn't exist" })
         }
-
+        if (video.uploader.toString() != req.user._id.toString()) {
+            return res.status(403).json({ msg: "Not authorized to delete this video" })
+        }
         await VideoModel.findByIdAndDelete(id)
 
         return res.status(200).json({ msg: "Video is removed" })

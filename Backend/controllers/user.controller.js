@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import UserModel from '../models/user.model.js'
+import jwt from "jsonwebtoken"
 
 async function register(req, res) {
     try {
@@ -46,12 +47,16 @@ async function login(req, res) {
                 return res.status(401).json({ msg: "Invalid credentials" })
             }
 
+            const token = jwt.sign({ id: data._id }, "secretKeyForYoutubeClone")
+
             return res.status(200).json({
                 user: {
                     id: data._id,
                     username: data.username,
-                    email: data.email
-                }
+                    email: data.email,
+                    channelId: data.channelId
+                },
+                accessToken: token
             })
         }
     }
