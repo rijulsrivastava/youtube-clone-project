@@ -13,13 +13,13 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   }
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("demo-user")
+    const storedUser = localStorage.getItem("user")
     if (!storedUser) return null
     try {
       return JSON.parse(storedUser)
     } catch (err) {
-      console.error("Invalid demo-user data:", err)
-      localStorage.removeItem("demo-user")
+      console.error("Invalid user data:", err)
+      localStorage.removeItem("user")
       return null
     }
   })

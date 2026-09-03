@@ -1,34 +1,41 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router"
+// import React, { useState } from "react";
+import { useNavigate, useParams, useOutletContext } from "react-router"
 import { BiSolidEdit, BiSolidTrash } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
-import videos from "../utilis/mockData"
-import channels from "../utilis/mockChannelData";
+// import videos from "../utilis/mockData"
+// import channels from "../utilis/mockChannelData";
+import useFetch from '../utilis/useFetch.js'
+import axios from "axios"
 
 function Channel() {
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useOutletContext()
 
-    const channel = channels.find(
-        (channel) => channel._id === id
-    )
+    const API = `http://localhost:5050/api/channels/${id}`
+    const { data, setData, loading, error } = useFetch(API)
 
-    const channelVideos = videos.filter(
-        (video) => video.channelId === id
-    )
+    const channel = data.channel
+    const channelVideos = data.videos || []
 
-    const isOwner = true
-    // const isOwner = false
+    const isOwner = user && channel && channel.owner && channel.owner._id == user.id
 
-    function handleDelete(videoId) {
-        console.log("Delete video:", videoId);
-    };
+    async function handleDelete(videoId) {
+        try {
+            const token = localStorage.getItem("token")
+            await axios.delete(`http://localhost:5050/api/video/${videoId}`, { headers: { Authorization: `JWT ${token}` } })
+            setData((prevData) => ({ ...prevData, videos: prevData.videos.filter((video) => video._id !== videoId) }))
+        } catch (err) {
+            console.log(err.response ? err.response.data.msg : err.message)
+        }
+    }
 
     function handleEdit(videoId) {
         navigate(`/editvideo/${videoId}`)
     }
-
+    if (loading) return <h1>Loading...</h1>
+    if (error) return <h1>{error} while fetching channel</h1>
     if (!channel) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center">

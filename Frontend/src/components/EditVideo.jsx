@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import videos from "../utilis/mockData";
+// import videos from "../utilis/mockData";
+import axios from "axios"
+import useFetch from "../utilis/useFetch.js"
 
 function EditVideo() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-
-    const [loading, setLoading] = useState(true)
+    const API = `http://localhost:5050/api/video/${id}`
+    const { data: video, loading, error: err } = useFetch(API)
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState("")
 
@@ -25,15 +27,13 @@ function EditVideo() {
         "Gaming",
         "Education",
         "Technology",
-        "News"
-    ];
-
-    const video = videos.find((video) => video._id == id)
-
+        "News",
+        "Entertainment",
+        "Travel"
+    ]
     useEffect(() => {
-        if (video) {
+        if (video && video._id) {
             setForm({
-                _id: video._id,
                 title: video.title || "",
                 description: video.description || "",
                 videoUrl: video.videoUrl || "",
@@ -41,8 +41,7 @@ function EditVideo() {
                 category: video.category || ""
             })
         }
-        setLoading(false);
-    }, [id])
+    }, [video])
 
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -67,10 +66,9 @@ function EditVideo() {
         return null
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         setError("")
-
         const validation = validate()
         if (validation) {
             setError(validation)
@@ -78,32 +76,20 @@ function EditVideo() {
         }
         try {
             setSaving(true)
-            const index = videos.findIndex((video) => video._id == id)
-            if (index === -1) {
-                throw new Error("Video does not exist")
-            }
-            videos[index] = {
-                ...videos[index],
+            const token = localStorage.getItem("token")
+            await axios.put(`http://localhost:5050/api/video/${id}`, {
                 title: form.title.trim(),
                 description: form.description.trim(),
                 videoUrl: form.videoUrl.trim(),
                 thumbnailUrl: form.thumbnailUrl.trim(),
-                category: form.category
-            }
-
-            console.log(videos[index])
-
-            if (videos[index].channelId?._id) {
-                navigate(`/channel/${videos[index].channelId._id}`)
-            } else if (videos[index].channelId) {
-                navigate(`/channel/${videos[index].channelId}`)
-            } else {
-                navigate("/")
-            }
-
+                category: form.category,
+                channelId: video.channelId._id
+            }, {
+                headers: { Authorization: `JWT ${token}` }
+            })
+            navigate(`/channel/${video.channelId._id}`)
         } catch (err) {
-            console.error(err)
-            setError(err.message)
+            setError(err.response ? err.response.data.msg : err.message)
         } finally {
             setSaving(false)
         }
@@ -115,7 +101,9 @@ function EditVideo() {
             </div>
         )
     }
-
+    if (err) {
+        return <h1>{err} while fetching video</h1>
+    }
     return (
         <div className="min-h-[calc(100vh-64px)] px-4 py-6 sm:py-8">
             <div className="max-w-3xl mx-auto">

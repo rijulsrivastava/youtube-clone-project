@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router"
-import channels from "../utilis/mockChannelData";
+// import channels from "../utilis/mockChannelData";
+import axios from "axios"
 
 function CreateChannel() {
 
@@ -30,7 +31,7 @@ function CreateChannel() {
         return null
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         setError("")
 
@@ -40,30 +41,33 @@ function CreateChannel() {
             setError(validation)
             return
         }
-
+        if (!user) {
+            navigate("/login")
+            return
+        }
         try {
-            setLoading(true);
-            const createdChannel = {
-                _id: `channel${Date.now()}`,
+            setLoading(true)
+            const token = localStorage.getItem("token")
+            const API = "http://localhost:5050/api/channels"
+            const data = await axios.post(API, {
                 channelName: form.channelName.trim(),
                 description: form.description.trim(),
                 channelBanner: form.channelBanner.trim(),
                 avatar: form.avatar.trim()
+            }, {
+                headers: { Authorization: `JWT ${token}` }
+            })
+            const updatedUser = {
+                ...user,
+                channelId: data.data._id
             }
-
-            console.log(createdChannel)
-            channels.push(createdChannel)
-            const updatedUser = { ...user, channelId: createdChannel._id }
-            localStorage.setItem("demo-user", JSON.stringify(updatedUser))
+            localStorage.setItem("user", JSON.stringify(updatedUser))
             setUser(updatedUser)
-            navigate(`/channel/${createdChannel._id}`)
-
+            navigate(`/channel/${data.data._id}`)
         } catch (err) {
-            console.error(err)
-            setError(err.message)
-
+            setError(err.response ? err.response.data.msg : err.message)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     }
 
