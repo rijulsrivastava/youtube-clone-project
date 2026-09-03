@@ -1,6 +1,4 @@
-import React from "react";
 import { useNavigate, useParams, useOutletContext } from "react-router";
-import videos from "../utilis/mockData";
 import { BiSolidDislike, BiSolidLike } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
 import Comments from "./Comments";
@@ -20,8 +18,6 @@ function VideoPlayer() {
     const { data: allVideos } = useFetch(API_ALL)
     const suggestedVideos = allVideos.filter((video) => video._id != id)
 
-    const [liked, setLiked] = useState(false)
-    const [disliked, setDisliked] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
     const [dislikeCount, setDislikeCount] = useState(0)
 
@@ -98,7 +94,7 @@ function VideoPlayer() {
                         <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">{video.title}</h1>
                         <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <p className="text-lg font-bold">{video.channelId ? video.channelId.channelName : "Sample Channel"}</p>
+                                <p onClick={() => navigate(`/channel/${video.channelId._id}`)} className="text-lg font-bold cursor-pointer">{video.channelId ? video.channelId.channelName : "Sample Channel"}</p>
                                 <p className="text-sm text-gray-500 mt-1"> {video.views ? video.views.toString() : 0} views</p>
                             </div>
                             <div className="flex items-center w-fit border border-gray-300 rounded-full overflow-hidden">

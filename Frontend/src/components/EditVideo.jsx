@@ -148,7 +148,7 @@ function EditVideo() {
                                 ? "Saving Changes..."
                                 : "Save Changes"}
                         </button>
-                        <button type="button" onClick={() => navigate('/')} className="flex-1 border border-gray-300 font-bold py-3 rounded-lg hover:bg-gray-100 transition">Cancel</button>
+                        <button type="button" onClick={() => navigate(`/channel/${video.channelId._id}`)} className="flex-1 border border-gray-300 font-bold py-3 rounded-lg hover:bg-gray-100 transition">Cancel</button>
                     </div>
                 </form>
             </div>

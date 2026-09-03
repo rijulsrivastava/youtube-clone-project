@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import Header from './components/Header'
 import SideMenu from './components/SideMenu';
-import HomePage from './components/HomePage';
-import RegisterUser from './components/RegisterUser';
-import Login from './components/Login';
 import { Outlet } from 'react-router';
 
 function App() {

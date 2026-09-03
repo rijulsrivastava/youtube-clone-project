@@ -26,8 +26,8 @@ function Header({ toggleMenu, user, setUser, setSearch }) {
     }
 
     function handleLogout() {
-        localStorage.removeItem("demo-token")
-        localStorage.removeItem("demo-user")
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
         setDropdownOpen(false)
         setUser(null)
         navigate("/")

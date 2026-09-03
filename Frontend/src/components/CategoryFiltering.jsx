@@ -1,5 +1,3 @@
-import React from "react";
-
 function CategoryFiltering({ filterCategory, setFilterCategory }) {
 
     const categories = [
@@ -10,6 +8,8 @@ function CategoryFiltering({ filterCategory, setFilterCategory }) {
         "Technology",
         "Education",
         "Programming",
+        "Entertainment",
+        "Travel"
     ]
 
     return (
