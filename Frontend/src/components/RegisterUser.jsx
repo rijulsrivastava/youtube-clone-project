@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios"
 
 function RegisterUser() {
 
@@ -22,32 +23,29 @@ function RegisterUser() {
         if (!form.username.trim()) return "Enter username"
         if (!form.email.trim()) return "Enter email"
         if (!form.password) return "Enter Password"
+        if (form.password.length < 10) return "Password must be 10 characters or more"
         return null
     }
 
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")
-
-        const validation = validateForm();
+        const validation = validateForm()
         if (validation) {
             setError(validation)
             return
         }
         try {
             setLoading(true)
-            console.log(form)
-            const newUser = {
-                _id: `user${Date.now()}`,
+            const API = "http://localhost:5050/api/register"
+            await axios.post(API, {
                 username: form.username.trim(),
                 email: form.email.trim(),
                 password: form.password
-            }
-            localStorage.setItem("registered-user", JSON.stringify(newUser))
-
-            navigate('/login')
+            })
+            navigate("/login")
         } catch (err) {
-            setError(err.message)
+            setError(err.response ? err.response.data.msg : err.message)
         } finally {
             setLoading(false);
         }
