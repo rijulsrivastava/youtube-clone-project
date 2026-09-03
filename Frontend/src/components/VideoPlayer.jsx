@@ -6,6 +6,7 @@ import { MdKeyboardReturn } from "react-icons/md"
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
 import useFetch from "../utilis/useFetch.js"
+import axios from "axios"
 
 function VideoPlayer() {
 
@@ -26,49 +27,48 @@ function VideoPlayer() {
 
     useEffect(() => {
         if (video) {
-            setLikeCount(video.likes ? video.likes.length : 0)
-            setDislikeCount(video.dislikes ? video.dislikes.length : 0)
+            setLikeCount((video.previousLikes || 0) + (video.likes ? video.likes.length : 0))
+            setDislikeCount((video.previousDislikes || 0) + (video.dislikes ? video.dislikes.length : 0))
         }
     }, [video])
     if (loading) return <h1>Loading...</h1>
     if (error) return <h1>{error} while fetching video</h1>
 
-    function handleLike() {
+    async function handleLike() {
         if (!user) {
             alert("Login to like the video")
             navigate("/login")
             return
         }
-        if (liked) {
-            setLiked(false)
-            setLikeCount(likeCount - 1)
-            return
+        try {
+            const token = localStorage.getItem("token")
+            const API_LIKE = `http://localhost:5050/api/video/${id}/like`
+
+            const data = await axios.put(API_LIKE, {}, {
+                headers: { Authorization: `JWT ${token}` }
+            })
+            setLikeCount(data.data.likes)
+            setDislikeCount(data.data.dislikes)
+        } catch (err) {
+            console.log(err.response ? err.response.data.msg : err.message)
         }
-        if (disliked) {
-            setDisliked(false)
-            setDislikeCount(dislikeCount - 1)
-        }
-        setLiked(true)
-        setLikeCount(likeCount + 1)
     }
 
-    function handleDislike() {
+    async function handleDislike() {
         if (!user) {
             alert("Login to dislike the video")
             navigate("/login")
             return
         }
-        if (disliked) {
-            setDisliked(false)
-            setDislikeCount(dislikeCount - 1)
-            return
-        }
-        if (liked) {
-            setLiked(false)
-            setLikeCount(likeCount - 1)
-        }
-        setDisliked(true)
-        setDislikeCount(dislikeCount + 1)
+        try {
+            const token = localStorage.getItem("token")
+            const API_DISLIKE = `http://localhost:5050/api/video/${id}/dislike`
+            const data = await axios.put(API_DISLIKE, {}, {
+                headers: { Authorization: `JWT ${token}` }
+            })
+            setLikeCount(data.data.likes)
+            setDislikeCount(data.data.dislikes)
+        } catch (err) { console.log(err.response ? err.response.data.msg : err.message) }
     }
 
     if (!video) {

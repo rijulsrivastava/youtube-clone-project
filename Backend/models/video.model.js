@@ -25,6 +25,14 @@ const videoSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        previousLikes: {
+            type: Number,
+            default: 0
+        },
+        previousDislikes: {
+            type: Number,
+            default: 0
+        },
         likes: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
@@ -46,7 +54,9 @@ const videoSchema = new mongoose.Schema(
                 "Gaming",
                 "Technology",
                 "Education",
-                "Programming"
+                "Programming",
+                "Entertainment",
+                "Travel"
             ]
         },
         uploader: {

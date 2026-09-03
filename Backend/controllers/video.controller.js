@@ -79,7 +79,7 @@ async function likeVideo(req, res) {
         }
 
         await video.save()
-        return res.status(200).json({ likes: video.likes.length, dislikes: video.dislikes.length })
+        return res.status(200).json({ likes: video.previousLikes + video.likes.length, dislikes: video.previousDislikes + video.dislikes.length })
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
@@ -101,7 +101,7 @@ async function dislikeVideo(req, res) {
             video.likes = video.likes.filter((id) => id.toString() != uploader)
         }
         await video.save()
-        return res.status(200).json({ likes: video.likes.length, dislikes: video.dislikes.length })
+        return res.status(200).json({ likes: video.previousLikes + video.likes.length, dislikes: video.previousDislikes + video.dislikes.length })
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
