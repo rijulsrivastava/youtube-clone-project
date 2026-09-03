@@ -1,12 +1,16 @@
 import CategoryFiltering from "./categoryFiltering";
 import VideoList from "./VideoList";
 import { useState } from "react";
-import videos from '../utilis/mockData.js'
+// import videos from '../utilis/mockData.js'
 import { useOutletContext } from 'react-router'
+import useFetch from "../utilis/useFetch.js"
 
 function HomePage() {
 
-    const [filterCategory, setFilterCategory] = useState("All");
+    const API = "http://localhost:5050/api/videos"
+    const { error, loading, data: videos } = useFetch(API)
+
+    const [filterCategory, setFilterCategory] = useState("All")
     const categoryFiltering = filterCategory == "All"
         ? videos
         : videos.filter((video) => video.category === filterCategory)
@@ -14,6 +18,9 @@ function HomePage() {
     const { search = "" } = useOutletContext()
     const filteredVideos = categoryFiltering.filter(
         (video) => video.title.toLowerCase().includes(search.toLowerCase()))
+
+    if (loading) return <h1>Loading...</h1>
+    if (error) return <h1>Error while fetching: {error}</h1>
 
     return (
         <main className="min-h-screen px-2 sm:px-4">

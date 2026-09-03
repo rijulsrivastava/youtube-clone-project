@@ -4,11 +4,13 @@ import mongoose from "mongoose"
 import videoRoute from "./Routes/video.route.js"
 import commentRoute from "./Routes/comment.route.js"
 import channelRoute from "./Routes/channel.route.js"
+import cors from "cors"
 
 const app = express()
 const PORT = 5050
 
 app.use(express.json())
+app.use(cors())
 
 mongoose.connect("mongodb+srv://rijulsrivastva_db_user:tN8TszFMzH5NTSS8@cluster0.ttucwly.mongodb.net/")
     .then(() => {
