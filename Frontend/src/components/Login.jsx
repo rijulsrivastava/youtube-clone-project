@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
+import axios from 'axios'
 
 function Login() {
 
@@ -24,7 +25,7 @@ function Login() {
         return null
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         setError("")
 
@@ -35,31 +36,20 @@ function Login() {
         }
         try {
             setLoading(true)
-            const storedUser = localStorage.getItem("registered-user");
-            if (!storedUser) {
-                setError("User is not registered")
-                return
-            }
-            const registeredUser = JSON.parse(storedUser)
-            if (form.email.trim() !== registeredUser.email || form.password !== registeredUser.password) {
-                setError("Invalid credentials")
-                return
-            }
-            const user = {
-                _id: registeredUser._id,
-                username: registeredUser.username,
-                email: registeredUser.email,
-                channelId: registeredUser.channelId || null
-            }
-            console.log(user)
-            const demoToken = "frontend-demo-token";
-            localStorage.setItem("demo-user", JSON.stringify(user))
-            localStorage.setItem("demo-token", demoToken)
-            setUser(user)
+            const API = "http://localhost:5050/api/login"
+            const data = await axios.post(API, {
+                email: form.email.trim(),
+                password: form.password
+            })
+            console.log(data)
+            localStorage.setItem("user", JSON.stringify(data.data.user))
+
+            localStorage.setItem("token", data.data.accessToken)
+            setUser(data.data.user)
             navigate("/")
 
         } catch (err) {
-            setError(err.message)
+            setError(err.response ? err.response.data.msg : err.message)
         } finally {
             setLoading(false);
         }
