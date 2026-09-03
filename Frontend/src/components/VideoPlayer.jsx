@@ -5,16 +5,19 @@ import { BiSolidDislike, BiSolidLike } from "react-icons/bi"
 import { MdKeyboardReturn } from "react-icons/md"
 import Comments from "./Comments";
 import { useState, useEffect } from "react";
+import useFetch from "../utilis/useFetch.js"
 
 function VideoPlayer() {
 
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const video = videos.find((video) => video._id == id)
-    console.log(video)
-
-    const suggestedVideos = videos.filter((video) => video._id != id)
+    const { id } = useParams()
+    const navigate = useNavigate()
     const { user } = useOutletContext()
+
+    const API = `http://localhost:5050/api/video/${id}`
+    const { data: video, error, loading } = useFetch(API)
+    const API_ALL = "http://localhost:5050/api/videos"
+    const { data: allVideos } = useFetch(API_ALL)
+    const suggestedVideos = allVideos.filter((video) => video._id != id)
 
     const [liked, setLiked] = useState(false)
     const [disliked, setDisliked] = useState(false)
@@ -23,10 +26,12 @@ function VideoPlayer() {
 
     useEffect(() => {
         if (video) {
-            setLikeCount(video.likes || 0);
-            setDislikeCount(video.dislikes || 0);
+            setLikeCount(video.likes ? video.likes.length : 0)
+            setDislikeCount(video.dislikes ? video.dislikes.length : 0)
         }
-    }, [id])
+    }, [video])
+    if (loading) return <h1>Loading...</h1>
+    if (error) return <h1>{error} while fetching video</h1>
 
     function handleLike() {
         if (!user) {
@@ -93,7 +98,7 @@ function VideoPlayer() {
                         <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">{video.title}</h1>
                         <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <p className="text-lg font-bold">{video.channelName || video.channelId || "Sample Channel"}</p>
+                                <p className="text-lg font-bold">{video.channelId ? video.channelId.channelName : "Sample Channel"}</p>
                                 <p className="text-sm text-gray-500 mt-1"> {video.views ? video.views.toString() : 0} views</p>
                             </div>
                             <div className="flex items-center w-fit border border-gray-300 rounded-full overflow-hidden">
@@ -133,7 +138,7 @@ function VideoPlayer() {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <h3 className="font-bold text-sm line-clamp-1">{suggestedVideo.title}</h3>
-                                    <p className="text-xs mt-2">{suggestedVideo.channelName || suggestedVideo.channelId || "Sample Channel"}</p>
+                                    <p className="text-xs mt-2">{suggestedVideo.channelId ? suggestedVideo.channelId.channelName : "Sample Channel"}</p>
                                     <p className="text-xs mt-1">
                                         {suggestedVideo.views
                                             ? suggestedVideo.views.toString()
