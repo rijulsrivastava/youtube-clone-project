@@ -1,5 +1,27 @@
 import VideoModel from '../models/video.model.js'
 
+async function createVideo(req, res) {
+    try {
+        const { title, description, thumbnailUrl, videoUrl, category, channelId } = req.body
+        if (!title?.trim() || !description?.trim() || !thumbnailUrl?.trim() || !videoUrl?.trim() || !category || !channelId) {
+            return res.status(400).json({ msg: "All fields are required" })
+        }
+        const video = await VideoModel.create({
+            title: title.trim(),
+            description: description.trim(),
+            thumbnailUrl: thumbnailUrl.trim(),
+            videoUrl: videoUrl.trim(),
+            category,
+            channelId,
+            uploader: req.user._id
+        })
+        return res.status(201).json(video)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ msg: "Error while creating video" })
+    }
+}
+
 async function readVideo(req, res) {
     try {
         const allVideos = await VideoModel.find().populate("channelId", "channelName avatar").populate("uploader", "username")
@@ -107,4 +129,4 @@ async function dislikeVideo(req, res) {
     }
 }
 
-export { readVideo, readVideoById, updateVideo, removeVideo, likeVideo, dislikeVideo }
+export { readVideo, readVideoById, updateVideo, removeVideo, likeVideo, dislikeVideo, createVideo }

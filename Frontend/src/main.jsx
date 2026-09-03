@@ -11,6 +11,7 @@ import Channel from './components/Channel.jsx'
 import CreateChannel from './components/CreateChannel.jsx'
 import EditVideo from './components/EditVideo.jsx'
 import Error from './components/Error.jsx'
+import CreateVideo from './components/CreateVideo.jsx'
 
 const appProvider = createBrowserRouter([{
   path: '/',
@@ -43,6 +44,10 @@ const appProvider = createBrowserRouter([{
   {
     path: '/editvideo/:id',
     element: <EditVideo />
+  },
+  {
+    path: '/createvideo',
+    element: <CreateVideo />
   }
   ]
 }])

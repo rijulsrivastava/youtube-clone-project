@@ -1,9 +1,11 @@
-import { dislikeVideo, likeVideo, readVideo, readVideoById, removeVideo, updateVideo } from '../controllers/video.controller.js'
+import { createVideo, dislikeVideo, likeVideo, readVideo, readVideoById, removeVideo, updateVideo } from '../controllers/video.controller.js'
 import verifyToken from '../middleware/verifyToken.js'
 
 function videoRoute(app) {
+
     app.get("/api/videos", readVideo)
     app.get("/api/video/:id", readVideoById)
+    app.post("/api/videos", verifyToken, createVideo)
     app.put("/api/video/:id", verifyToken, updateVideo)
     app.delete("/api/video/:id", verifyToken, removeVideo)
     app.put("/api/video/:id/like", verifyToken, likeVideo)
