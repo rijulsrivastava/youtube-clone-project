@@ -120,3 +120,7 @@
 <h1>Github Link</h1>
 <a
     href="https://github.com/rijulsrivastava/youtube-clone-project.git">https://github.com/rijulsrivastava/youtube-clone-project.git</a>
+
+<h1>Screen Recording Demo of Youtube Clone Link</h1>
+<a
+    href="https://drive.google.com/file/d/1h3TBrVRVncV0Weo6PSx-fZHSqCGyyJ-E/view?usp=sharing">https://drive.google.com/file/d/1h3TBrVRVncV0Weo6PSx-fZHSqCGyyJ-E/view?usp=sharing</a>
