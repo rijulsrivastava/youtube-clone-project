@@ -7,24 +7,25 @@ import { IoPersonCircleOutline, IoLogOutOutline } from "react-icons/io5";
 function Header({ toggleMenu, user, setUser, setSearch }) {
 
     const navigate = useNavigate()
-    const [searchText, setSearchText] = useState("")
-    const [dropdownOpen, setDropdownOpen] = useState(false)
-
+    const [searchText, setSearchText] = useState("") // to store search state
+    const [dropdownOpen, setDropdownOpen] = useState(false) //to store dropdown state 
+    //below is to send search text to parent component
     function handleSearch(e) {
         e.preventDefault()
         setSearch(searchText.trim())
     }
+    // to clear the search text when search input is empty
     useEffect(() => {
         if (searchText.trim() == "") {
             setSearch("")
         }
     }, [searchText])
-
+    // to clear search input and redirect to home
     function handleClick() {
         setSearchText("")
         navigate("/")
     }
-
+    // when logout it removes authentication info
     function handleLogout() {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
@@ -38,6 +39,7 @@ function Header({ toggleMenu, user, setUser, setSearch }) {
         <div className="bg-white border-b border-gray-300 sticky top-0 p-3 z-20 md:px-6">
             <div className="flex justify-between gap-4 items-center">
                 <div className="flex items-center gap-3 shrink-0">
+                    {/* below is to open/close sidemenu */}
                     <div onClick={toggleMenu} className="hover:bg-gray-300 transition cursor-pointer">
                         <MdOutlineMenu className="text-gray-700 scale-150" />
                     </div>
@@ -63,6 +65,7 @@ function Header({ toggleMenu, user, setUser, setSearch }) {
                                     {user.username}
                                 </span>
                             </button>
+                            {/* when dropdown is open it shows logout and channel option */}
                             {dropdownOpen && (
                                 <div className="flex flex-col bg-white absolute right-0 top-12 w-56 border py-2 z-10 rounded-xl shadow-lg overflow-hidden">
                                     {user.channelId ? (
@@ -93,6 +96,7 @@ function Header({ toggleMenu, user, setUser, setSearch }) {
                     )}
                 </nav>
             </div>
+            {/* this is to show search functionality on mobile */}
             <form onSubmit={handleSearch} className="flex sm:hidden mt-3">
                 <div className="flex w-full h-10 overflow-hidden border border-gray-300 rounded-full">
                     <input type="text" placeholder="Search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="flex-1 min-w-0 px-4 text-sm outline-none" />

@@ -24,9 +24,11 @@ function CreateVideo() {
         "Entertainment",
         "Travel"
     ]
+    // to update selected fields
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
+    // to validate input fields
     function validateForm() {
         if (!form.title.trim()) return "Enter video title"
         if (!form.description.trim()) return "Enter video description"
@@ -35,6 +37,7 @@ function CreateVideo() {
         if (!form.category) return "Select video category"
         return null
     }
+    // to create new video
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")
@@ -43,6 +46,7 @@ function CreateVideo() {
             setError(validation)
             return
         }
+        // to ensure verified user is creating video
         if (!user) {
             navigate("/login")
             return
@@ -55,6 +59,7 @@ function CreateVideo() {
             setLoading(true)
             const token = localStorage.getItem("token")
             const API = "http://localhost:5050/api/videos"
+            // to send matadata for video to backend
             await axios.post(API, {
                 title: form.title.trim(),
                 description: form.description.trim(),

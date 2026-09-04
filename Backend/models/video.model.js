@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+// to define schema for videos
 const videoSchema = new mongoose.Schema(
     {
         videoUrl: {
@@ -16,6 +16,7 @@ const videoSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        // to get channel
         channelId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Channel",
@@ -67,7 +68,7 @@ const videoSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
-
+// to create model for video
 const Video = mongoose.model("Video", videoSchema)
 
 export default Video

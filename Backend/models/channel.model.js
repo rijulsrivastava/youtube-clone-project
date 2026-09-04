@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-const channelSchema = new mongoose.Schema(
+const channelSchema = new mongoose.Schema( //to define schema for channel
     {
         channelName: {
             type: String,
@@ -18,6 +18,7 @@ const channelSchema = new mongoose.Schema(
             type: String,
             trim: true
         },
+        // below is to get owner of the channel
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             unique: true,
@@ -27,5 +28,5 @@ const channelSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
-const Channel = mongoose.model("Channel", channelSchema)
+const Channel = mongoose.model("Channel", channelSchema) // to create model for channel
 export default Channel

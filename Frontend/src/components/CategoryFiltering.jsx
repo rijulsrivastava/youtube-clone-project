@@ -1,5 +1,5 @@
 function CategoryFiltering({ filterCategory, setFilterCategory }) {
-
+    // to filter using below categories
     const categories = [
         "All",
         "News",
@@ -14,6 +14,7 @@ function CategoryFiltering({ filterCategory, setFilterCategory }) {
 
     return (
         <div className="flex gap-2 sm:gap-3 my-3 overflow-x-auto pb-1">
+            {/* to create buttons for different categories */}
             {categories.map((category) => (
                 <button key={category} onClick={() => setFilterCategory(category)} className={category == filterCategory ? "bg-black text-white px-3 py-1 rounded-lg whitespace-nowrap text-sm font-medium" : "bg-white text-black px-2 py-1 rounded-lg whitespace-nowrap text-sm font-medium hover:bg-gray-300 transition"}>
                     {category}

@@ -8,11 +8,12 @@ function EditVideo() {
 
     const { id } = useParams()
     const navigate = useNavigate()
+    // to get a pparticular video
     const API = `http://localhost:5050/api/video/${id}`
     const { data: video, loading, error: err } = useFetch(API)
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState("")
-
+    // to store video details
     const [form, setForm] = useState({
         title: "",
         description: "",
@@ -42,11 +43,11 @@ function EditVideo() {
             })
         }
     }, [video])
-
+    // to update selected field
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
-
+    // to validate input fields
     function validate() {
         if (!form.title.trim()) {
             return "Enter title"
@@ -65,7 +66,7 @@ function EditVideo() {
         }
         return null
     }
-
+    // to update video
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")
@@ -77,6 +78,7 @@ function EditVideo() {
         try {
             setSaving(true)
             const token = localStorage.getItem("token")
+            // to send video back to backend
             await axios.put(`http://localhost:5050/api/video/${id}`, {
                 title: form.title.trim(),
                 description: form.description.trim(),

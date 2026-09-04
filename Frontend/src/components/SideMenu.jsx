@@ -7,7 +7,9 @@ import { Link } from 'react-router'
 
 function SideMenu() {
     return (
+        // below section is sidemenu containing navigation options
         <aside className="absolute left-0 top-0 z-10 flex flex-col gap-2 w-52 border bg-white border-gray-200 rounded-xl shadow-lg p-2 sm:relative sm:left-auto sm:top-auto sm:w-48 sm:shrink-0 sm:border-0 sm:border-r sm:rounded-none sm:shadow-none sm:p-0">
+            {/* below link is to navigate back to home */}
             <Link to={'/'} className="flex gap-3 p-2 rounded-lg items-center text-sm md:text-base hover:bg-gray-200 transition cursor-pointer">
                 <TiHome />
                 <span>Home</span>

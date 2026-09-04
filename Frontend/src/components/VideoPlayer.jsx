@@ -11,16 +11,17 @@ function VideoPlayer() {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useOutletContext()
-
+    // to read a particular video
     const API = `http://localhost:5050/api/video/${id}`
     const { data: video, error, loading } = useFetch(API)
+    //to read all videos
     const API_ALL = "http://localhost:5050/api/videos"
     const { data: allVideos } = useFetch(API_ALL)
     const suggestedVideos = allVideos.filter((video) => video._id != id)
 
     const [likeCount, setLikeCount] = useState(0)
     const [dislikeCount, setDislikeCount] = useState(0)
-
+    //to mount like/dislike counts when video is read or changed
     useEffect(() => {
         if (video) {
             setLikeCount((video.previousLikes || 0) + (video.likes ? video.likes.length : 0))
@@ -29,8 +30,9 @@ function VideoPlayer() {
     }, [video])
     if (loading) return <h1>Loading...</h1>
     if (error) return <h1>{error} while fetching video</h1>
-
+    // to handle like/unlike to video
     async function handleLike() {
+        //if verified user is not there then it navigates to login page
         if (!user) {
             alert("Login to like the video")
             navigate("/login")
@@ -43,14 +45,15 @@ function VideoPlayer() {
             const data = await axios.put(API_LIKE, {}, {
                 headers: { Authorization: `JWT ${token}` }
             })
-            setLikeCount(data.data.likes)
-            setDislikeCount(data.data.dislikes)
+            setLikeCount(data.data.likes) // to get likeCount from backend
+            setDislikeCount(data.data.dislikes) // to get dislikeCount from backend
         } catch (err) {
             console.log(err.response ? err.response.data.msg : err.message)
         }
     }
-
+    // handle add/remove dislike to video
     async function handleDislike() {
+        //if verified user is not there then it navigates to login page
         if (!user) {
             alert("Login to dislike the video")
             navigate("/login")
@@ -62,8 +65,8 @@ function VideoPlayer() {
             const data = await axios.put(API_DISLIKE, {}, {
                 headers: { Authorization: `JWT ${token}` }
             })
-            setLikeCount(data.data.likes)
-            setDislikeCount(data.data.dislikes)
+            setLikeCount(data.data.likes)// to get likeCount from backend
+            setDislikeCount(data.data.dislikes)// to get dislikeCount from backend
         } catch (err) { console.log(err.response ? err.response.data.msg : err.message) }
     }
 
@@ -81,6 +84,7 @@ function VideoPlayer() {
         <div className="min-h-screen px-4 py-5 md:px-6 lg:px-8">
             <div className="max-w-8xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-8">
                 <div className="flex-1 min-w-0">
+                    {/* to show a particular video */}
                     <div className="w-full aspect-video rounded-xl overflow-hidden">
                         {video.videoUrl ? (
                             < video src={video.videoUrl} poster={video.thumbnailUrl} controls className="w-full h-full object-contain" ></video>
@@ -119,11 +123,11 @@ function VideoPlayer() {
                     </div>
 
                     <div className="mt-8">
-                        <Comments id={id} />
+                        <Comments id={id} /> {/*to show comments of a particular video*/}
                     </div>
                 </div>
 
-
+                {/* below is to show Suggested videos */}
                 <div className="w-full lg:w-[340px] xl:w-[360px] lg:flex-shrink-0">
                     <h3 className="text-2xl font-bold mb-4">Suggested Videos</h3>
                     <div className="flex flex-col gap-4">

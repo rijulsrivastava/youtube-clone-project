@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-
+//below is the custom hook to fetch APIs
 function useFetch(url) {
     const [data, setData] = useState([])
     const [error, setError] = useState()
     const [loading, setLoading] = useState(true)
     useEffect(() => {
+        //to fetch data when url changes
         async function fetchData() {
             try {
                 setLoading(true)

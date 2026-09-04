@@ -6,7 +6,7 @@ function RegisterUser() {
 
     const navigate = useNavigate()
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState({ // this is to store registration input
         username: "",
         email: "",
         password: ""
@@ -14,11 +14,11 @@ function RegisterUser() {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
+    // below is to update particular input
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
-
+    // to validate input  fields
     function validateForm() {
         if (!form.username.trim()) return "Enter username"
         if (!form.email.trim()) return "Enter email"
@@ -26,7 +26,7 @@ function RegisterUser() {
         if (form.password.length < 10) return "Password must be 10 characters or more"
         return null
     }
-
+    //this is to register user by backend apis
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")

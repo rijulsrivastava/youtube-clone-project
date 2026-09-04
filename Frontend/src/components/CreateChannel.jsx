@@ -7,6 +7,7 @@ function CreateChannel() {
 
     const navigate = useNavigate()
     const { user, setUser } = useOutletContext();
+    // to manage channel info
     const [form, setForm] = useState({
         channelName: "",
         description: "",
@@ -16,11 +17,11 @@ function CreateChannel() {
 
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-
+    // to update a selected field
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
-
+    // to validate input fields
     function validateForm() {
         if (!form.channelName.trim()) {
             return "Enter channel name"
@@ -30,7 +31,7 @@ function CreateChannel() {
         }
         return null
     }
-
+    //to create new channel
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")
@@ -41,6 +42,7 @@ function CreateChannel() {
             setError(validation)
             return
         }
+        // to ensure verified user is there to create channel
         if (!user) {
             navigate("/login")
             return
@@ -61,6 +63,7 @@ function CreateChannel() {
                 ...user,
                 channelId: data.data._id
             }
+            // to store user info
             localStorage.setItem("user", JSON.stringify(updatedUser))
             setUser(updatedUser)
             navigate(`/channel/${data.data._id}`)

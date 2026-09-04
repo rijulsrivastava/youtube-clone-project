@@ -12,15 +12,15 @@ function Channel() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useOutletContext()
-
+    //below is to get channel details using id
     const API = `http://localhost:5050/api/channels/${id}`
     const { data, setData, loading, error } = useFetch(API)
 
     const channel = data.channel
     const channelVideos = data.videos || []
-
+    // to know if verified user owns this channel
     const isOwner = user && channel && channel.owner && channel.owner._id == user.id
-
+    // to delete video of verified user
     async function handleDelete(videoId) {
         try {
             const token = localStorage.getItem("token")
@@ -30,7 +30,7 @@ function Channel() {
             console.log(err.response ? err.response.data.msg : err.message)
         }
     }
-
+    // below is used to navigate to edit page
     function handleEdit(videoId) {
         navigate(`/editvideo/${videoId}`)
     }
@@ -81,6 +81,7 @@ function Channel() {
                         )}
 
                     </div>
+                    {/* if user owns the channel then video can be created */}
                     {isOwner && <button onClick={() => navigate("/createvideo")} className="bg-black text-white px-4 py-2 rounded-lg mb-10">Create Video</button>}
                     {channelVideos.length === 0 ? (
                         <div className="text-center py-16">
@@ -100,6 +101,7 @@ function Channel() {
                                         <h3 className="font-semibold text-sm line-clamp-2 cursor-pointer" onClick={() => navigate(`/videoplayer/${video._id}`)}>{video.title}</h3>
                                         <p className="text-sm mt-2">{video.views || 0}{" "}views</p>
                                         <p className="text-sm">{video.category}</p>
+                                        {/* if user owns the channel then video can be edited of deleted */}
                                         {isOwner && (
                                             <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
                                                 <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm" onClick={() => handleEdit(video._id)}>

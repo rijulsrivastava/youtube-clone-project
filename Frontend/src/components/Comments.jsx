@@ -12,16 +12,14 @@ function Comments({ id }) {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editText, setEditText] = useState("");
     const [error, setError] = useState("");
-
-    // const video = videos.find((video) => video._id === id);
-    // const [comments, setComments] = useState(video ? video.comments : [])
     const { user } = useOutletContext()
-
+    //to get comments of a particular video
     const API = `http://localhost:5050/api/comments/${id}`
     const { data: comments, setData: setComments, loading, error: err } = useFetch(API)
-
+    // to create new comment
     async function handleAddComment(e) {
         e.preventDefault()
+        // if not verified user then navigate to login page
         if (!user) {
             alert("Login to comment on the video")
             navigate("/login")
@@ -40,6 +38,7 @@ function Comments({ id }) {
             }, {
                 headers: { Authorization: `JWT ${token}` }
             })
+            // to add comment to the UI
             setComments((prevComments) => [...prevComments, data.data])
             setCommentText("")
         } catch (err) {
@@ -50,6 +49,7 @@ function Comments({ id }) {
         setEditingCommentId(comment._id)
         setEditText(comment.text)
     }
+    // to update an existing comment
     async function handleUpdateComment(_id) {
         if (!editText.trim()) {
             return
@@ -70,6 +70,7 @@ function Comments({ id }) {
             setEditText("")
         } catch (err) { setError(err.response ? err.response.data.msg : err.message) }
     }
+    // tp delete a comment
     async function handleDeleteComment(_id) {
         try {
             setError("")
@@ -78,6 +79,7 @@ function Comments({ id }) {
             await axios.delete(API_DELETE, {
                 headers: { Authorization: `JWT ${token}` }
             })
+            // to remove comment from UI
             setComments((prevComments) => prevComments.filter((comment) => comment._id !== _id))
         } catch (err) {
             setError(err.response ? err.response.data.msg : err.message)
@@ -108,6 +110,7 @@ function Comments({ id }) {
                 <div className="py-8 text-center ">No comments</div>
             ) : (
                 <div className="space-y-6 md:space-y-7">
+                    {/* to show comments of a particular video */}
                     {comments.map((comment) => (
                         <div key={comment._id} className="flex gap-3 md:gap-4">
                             <div className="w-8 md:w-10 h-8 md:h-10 text-sm md:text-base flex-shrink-0 bg-gray-200 rounded-full flex items-center justify-center font-bold">
@@ -140,7 +143,7 @@ function Comments({ id }) {
                                 ) : (
                                     <p className="mt-1 text-sm md:text-base break-words">{comment.text}</p>
                                 )}
-
+                                {/* verified user only can delete or edit comment */}
                                 {user && comment.userId && comment.userId._id == user.id && editingCommentId !== comment._id && (
                                     <div className="flex flex-wrap items-center gap-4 mt-2">
                                         <button type="button" onClick={() => handleEditStart(comment)} className="flex items-center gap-1 text-sm hover:scale-110 transition">

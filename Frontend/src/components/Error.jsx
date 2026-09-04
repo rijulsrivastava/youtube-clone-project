@@ -5,7 +5,7 @@ import { MdKeyboardReturn } from "react-icons/md";
 function Error() {
 
     const navigate = useNavigate();
-    const error = useRouteError();
+    const error = useRouteError(); // to get routing error
 
     return (
         <div className="w-full min-h-screen flex px-4 justify-center items-center">
@@ -18,6 +18,7 @@ function Error() {
                         {error.statusText}
                     </p>
                 )}
+                {/* to navigate back to the home */}
                 <button onClick={() => navigate("/")} className="flex items-center gap-1 mt-6 px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
                     <MdKeyboardReturn />
                     HOME

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 function Video({ video }) {
     const navigate = useNavigate()
-
+    // to navigate to a particular video
     function handleClick() {
         navigate(`/videoplayer/${video._id}`)
     }
@@ -17,6 +17,7 @@ function Video({ video }) {
             <div className='flex justify-between gap-2 items-center mx-2'>
                 <div className="flex flex-col justify-between">
                     <h3 className='text-md font-bold line-clamp-1  cursor-pointer' onClick={handleClick} > {video.title} </h3>
+                    {/* on click it navigates to a particular video */}
                     <p onClick={() => navigate(`/channel/${video.channelId._id}`)} className='text-sm cursor-pointer'> {video.channelId ? video.channelId.channelName : "YouTube Channel"} </p>
                     <p className='text-sm'>{video.views || 0} views</p>
                 </div>

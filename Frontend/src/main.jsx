@@ -12,7 +12,7 @@ import CreateChannel from './components/CreateChannel.jsx'
 import EditVideo from './components/EditVideo.jsx'
 import Error from './components/Error.jsx'
 import CreateVideo from './components/CreateVideo.jsx'
-
+// below is to define app routes
 const appProvider = createBrowserRouter([{
   path: '/',
   element: <App />,
@@ -51,7 +51,7 @@ const appProvider = createBrowserRouter([{
   }
   ]
 }])
-
+// to render application
 createRoot(document.getElementById('root')).render(
   <RouterProvider router={appProvider} />
 )

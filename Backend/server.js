@@ -9,9 +9,9 @@ import cors from "cors"
 const app = express()
 const PORT = 5050
 
-app.use(express.json())
-app.use(cors())
-
+app.use(express.json()) // to parse json objects
+app.use(cors()) // to make communication between frontend and backend
+//below is to connect mongoDB
 mongoose.connect("mongodb+srv://rijulsrivastva_db_user:tN8TszFMzH5NTSS8@cluster0.ttucwly.mongodb.net/")
     .then(() => {
         console.log("DB connected with cloud")
@@ -20,12 +20,12 @@ mongoose.connect("mongodb+srv://rijulsrivastva_db_user:tN8TszFMzH5NTSS8@cluster0
         console.log("DB not connected", err)
     })
 
-
+// below are to user API routes for applications
 userRoute(app)
 videoRoute(app)
 commentRoute(app)
 channelRoute(app)
-
+//to start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port:${PORT}`)
 })

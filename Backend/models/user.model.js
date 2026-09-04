@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+// to define schema for user
 const userSchema = new mongoose.Schema(
     {
         username: {
@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
             minlength: 10,
             required: true
         },
+        // to get channel belong to the user
         channelId: {
             type: mongoose.Schema.Types.ObjectId,
             default: null,
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema(
 )
 
 
-
+// to create model for use
 const User = mongoose.model("User", userSchema)
 
 export default User

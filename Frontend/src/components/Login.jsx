@@ -6,25 +6,25 @@ function Login() {
 
     const navigate = useNavigate()
     const { setUser } = useOutletContext();
-    const [form, setForm] = useState({
+    const [form, setForm] = useState({ // this is to store login input
         email: "",
         password: ""
     })
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
+    // below is to update particular input
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
-
+    // to validate input  fields
     function validateForm() {
         if (!form.email.trim()) return "Enter email"
         if (!form.password) return "Enter Password"
         if (form.password.length < 10) return "Password must be 10 characters or more"
         return null
     }
-
+    //this is to verify user backend apis
     async function handleSubmit(e) {
         e.preventDefault()
         setError("")
@@ -42,10 +42,11 @@ function Login() {
                 password: form.password
             })
             console.log(data)
+            // to store user info and token
             localStorage.setItem("user", JSON.stringify(data.data.user))
 
             localStorage.setItem("token", data.data.accessToken)
-            setUser(data.data.user)
+            setUser(data.data.user)// to update user state to parent
             navigate("/")
 
         } catch (err) {
